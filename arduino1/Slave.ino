@@ -1,35 +1,24 @@
-#include <NewPing.h>
-#define TRIGGER_PIN  10   // Arduino pin 2 tied to trigger pin on the ultrasonic sensor.
-#define ECHO_PIN     9   // Arduino pin 3 tied to echo pin on the ultrasonic sensor.
-#define MAX_DISTANCE 150 // Maximum distance we want to ping for
-//mASTER is 12
-int state = 20;
-//int buttonState = 0;
-
-NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
-
 void setup() {
-  //pinMode(8, OUTPUT);
-  //pinMode(11, OUTPUT);
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  analogWrite(A0, 0);
   Serial.begin(38400); // Default communication rate of the Bluetooth module
-  //Serial.begin(9600);
-  //digitalWrite(8,LOW);
-  //digitalWrite(11,HIGH);
-}
-void loop() {
- if(Serial.available() > 0){ // Checks whether data is comming from the serial port
-    state = Serial.read(); // Reads the data from the serial port
 }
 
- // Reading the button
- int cm = sonar.ping_cm();
- //Serial.println(cm);
-//delay(100);
-//Serial.println(state);
-Serial.write(cm); // Sends '1' to the master to turn on LED
-delay(100);
-/*for(int i = 1; i <= 255; i++){
-  Serial.write(i);
-  delay(100);
-}*/
+void loop() {
+float state = 0;
+ if (Serial.available() > 0){ // Checks whether data is comming from the serial port
+    state = Serial.read(); // Reads the data from the serial port
+    Serial.println(state);
+    //analogWrite(A1, state);
+ }
+
+ else Serial.println("lai bus");
+ //state=150.0;
+if(state<=75.0){
+    analogWrite(A1, 127.0 + (state*255.0)/150.0);
+}
+
+//Serial.write(0); // Sends '1' to the master to turn on LED
+ delay(100);
 }
