@@ -9,6 +9,7 @@ int pwm1=8, pwm2=9;
 int forward=0, turn=0;
 int left =0, right=0;
 int powl=0, powr=0;
+int buttonprev = 1, buttoncurr=1, parkingstate =0;
 
 void setup() {
   pinMode(la1,OUTPUT);
@@ -50,14 +51,22 @@ void loop() {
     forward = constrain(forward, -100, 0);
   }
   else forward = 0;
-  BTsend(parking_switch, forward, turn);
+  
+  buttonprev = buttoncurr;
+  buttoncurr = digitalRead(buttonPin);
+  if(buttonprev==1 && buttoncurr ==0 )
+  {
+    if (parkingstate == 1) parkingstate =0;
+    else if (parkingstate == 0) parkingstate =1;
+  }
+  //BTsend(parkingstate, forward, turn);
   /* forward and turn are transmitted to the car
    *  the code from here is put into the car
    */
-  Steer(froward, turn);
+  Steer(parkingstate, froward, turn);
   
 }
-void Steer(int forward, int turn)
+void Steer(int parkingstate, int forward, int turn)
 {
   if (forward>=0){
   left = forward + turn;
@@ -102,5 +111,7 @@ void Steer(int forward, int turn)
   Serial.print("  l: ");
   Serial.print(left);
   Serial.print(" r: ");
-  Serial.println(right);
+  Serial.print(right);
+  Serial.print(" p: ");
+  Serial.println(parkingstate);
 }
