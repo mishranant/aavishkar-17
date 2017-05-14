@@ -5,6 +5,7 @@
 #define la2 49
 #define rx A0
 #define ry A1
+#define buttonPin 2
 int pwm1=8, pwm2=9;
 int forward=0, turn=0;
 int left =0, right=0;
@@ -21,6 +22,7 @@ void setup() {
 
   pinMode(rx,INPUT);
   pinMode(ry,INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
 
   Serial.begin(9600);
 
