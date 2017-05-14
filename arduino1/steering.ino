@@ -50,6 +50,7 @@ void loop() {
     forward = constrain(forward, -100, 0);
   }
   else forward = 0;
+  BTsend(parking_switch, forward, turn);
   /* forward and turn are transmitted to the car
    *  the code from here is put into the car
    */
