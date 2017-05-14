@@ -27,12 +27,12 @@ void setup() {
 
 void loop() {
   
-  
+  /* this goes into the remote*/
   int x = analogRead(rx);
   int y = analogRead(ry);
 
   if (x<=500) {
-    turn = map(x, 4, 500, -100, 0);
+    turn = map(x, 4, 505, -100, 0);
     turn = constrain(turn, -100, 0);
   }
   else if (x>=520){
@@ -42,25 +42,34 @@ void loop() {
   else turn = 0;
   
   if (y<=500){
-    forward = map(y, 4, 500, 100, 0);
+    forward = map(y, 4, 505, 100, 0);
     forward = constrain(forward, 0, 100);
   }
   else if (y>=520){
-    forward = map(y, 530, 1020, 0, -100);
+    forward = map(y, 525, 1020, 0, -100);
     forward = constrain(forward, -100, 0);
   }
   else forward = 0;
-  if (forward<=0){
+  /* forward and turn are transmitted to the car
+   *  the code from here is put into the car
+   */
+  Steer(froward, turn);
+  
+}
+void Steer(int forward, int turn)
+{
+  if (forward>=0){
   left = forward + turn;
   left = constrain(left, -100, 100);
   right = forward - turn;
   right = constrain(right, -100, 100);
   }
   else{
+   left =  forward - turn;
+  left = constrain(left, -100, 100);
   right = forward + turn;
   right = constrain(right, -100, 100);
-  left = forward - turn;
-  left = constrain(left, -100, 100);
+  
   }
 
   if(left>=0)powl = map(left, 0, 100, 0, 255);
