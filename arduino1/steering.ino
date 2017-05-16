@@ -27,47 +27,6 @@ void setup() {
   Serial.begin(9600);
 
 }
-
-void loop() {
-  
-  /* this goes into the remote*/
-  int x = analogRead(rx);
-  int y = analogRead(ry);
-
-  if (x<=500) {
-    turn = map(x, 4, 505, -100, 0);
-    turn = constrain(turn, -100, 0);
-  }
-  else if (x>=520){
-    turn = map(x, 525, 1020, 0, 100);
-    turn = constrain(turn, 0, 100);
-  }
-  else turn = 0;
-  
-  if (y<=500){
-    forward = map(y, 4, 505, 100, 0);
-    forward = constrain(forward, 0, 100);
-  }
-  else if (y>=520){
-    forward = map(y, 525, 1020, 0, -100);
-    forward = constrain(forward, -100, 0);
-  }
-  else forward = 0;
-  
-  buttonprev = buttoncurr;
-  buttoncurr = digitalRead(buttonPin);
-  if(buttonprev==1 && buttoncurr ==0 )
-  {
-    if (parkingstate == 1) parkingstate =0;
-    else if (parkingstate == 0) parkingstate =1;
-  }
-  //BTsend(parkingstate, forward, turn);
-  /* forward and turn are transmitted to the car
-   *  the code from here is put into the car
-   */
-  Steer(parkingstate, froward, turn);
-  
-}
 void Steer(int parkingstate, int forward, int turn)
 {
   if (forward>=0){
