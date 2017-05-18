@@ -29,4 +29,9 @@ void loop() {
     motorWrite();
     delay(100);
   }
+  Serial.println();
+  Serial.println(m1a);
+  Serial.println(m2a);
+  Serial.println(m3a);
+  Serial.println(m4a);
 }
