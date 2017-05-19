@@ -28,13 +28,17 @@
       }
       else
       {*/
-          if(!BCDloop())
+         /* if(!BCDloop())
           {
               Serial.println("collision is imminent");
           }
           else
           {
+            //
             movementProcess();
           }
      // }*/
+
+     BCDloop();
+     delay(50);
   }

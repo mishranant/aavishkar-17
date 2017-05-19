@@ -1,6 +1,6 @@
 unsigned long currentMillis = 0, prevMillis = 0, deltaTime = 0;
 const int buzzer = A6; //buzzer to arduino pin A6
-float duration, distMax = 100;
+float duration, distMax = 500;
 //Change pins
 int sonarPins[8][2] = 
 {
@@ -10,8 +10,8 @@ int sonarPins[8][2] =
   {9, 10},
   {A5,A4},
   {A3,A2},
-  {A1,A0},
-  {9, 10}
+  {A8,A9},
+  {11, 12}
 };
 
 
@@ -20,9 +20,9 @@ int sonarPins[8][2] =
 const int backThreshold = 3, backMax = 10;
 const int sideThreshold = 5, sideMax = 15;*/
 
-const int frontThreshold = 50, frontMax = 30;
-const int backThreshold = 50, backMax = 10;
-const int sideThreshold = 50, sideMax = 15;
+const int frontThreshold =30 , frontMax = 30;
+const int backThreshold = 30, backMax = 30;
+const int sideThreshold = 30, sideMax = 30;
 
 float sonar1 = 0, sonar1Prev = 0, sonar2 = 0, sonar2Prev = 0, sonar3 = 0, sonar3Prev = 0, sonar4 = 0, sonar4Prev = 0, sonar5 = 0, sonar5Prev = 0, sonar6 = 0, sonar6Prev = 0, sonar7 = 0, sonar7Prev = 0, sonar8 = 0, sonar8Prev = 0;
 
@@ -106,15 +106,15 @@ void readSides()
   Serial.print("sonar2: ");
   Serial.println(sonar2);
   sonar4Prev = sonar4;
-  //sonar4 = readSonar(4);
-  sonar4 = sonar2;
+  sonar4 = readSonar(4);
+  //sonar4 = sonar2;
   sonar6Prev = sonar6;
   sonar6 = readSonar(6);
     Serial.print("sonar6: ");
   Serial.println(sonar6);
   sonar8Prev = sonar8;
-  //sonar8 = readSonar(8);
-  sonar8 = sonar6;
+  sonar8 = readSonar(8);
+  //sonar8 = sonar6;
 }
 
 void readCorners()
@@ -170,6 +170,7 @@ void checkBack()
     {
       if((sonar6Prev - sonar6)/deltaTime > 5)
       {
+        Serial.println("gsrs");
         beep(1);
       }
     }
@@ -273,6 +274,7 @@ void checkLaneChange()
 
 int BCDloop()
 {
+  delay(100);
   if(active)
   {
     prevMillis = currentMillis;
@@ -292,14 +294,11 @@ int BCDloop()
       readSides();
       checkFront();
       checkBack();
-      checkSide(sonar4, sonar4Prev);
-      checkSide(sonar7, sonar7Prev);
+      //checkSide(sonar4, sonar4Prev);
+      //checkSide(sonar7, sonar7Prev);
       if(turning)
       {
-        sonar1 = readSonar(1);
-        sonar3 = readSonar(3);
-        sonar5 = readSonar(5);
-        sonar7 = readSonar(7);
+        readCorners();
         checkLaneChange();
       }
     }
